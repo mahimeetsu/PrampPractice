@@ -1,0 +1,63 @@
+Given an array arr of distinct integers and a nonnegative integer k, write a function findPairsWithGivenDifference that returns an array of all pairs [x,y] in arr, such that x - y = k. 
+If no such pairs exist, return an empty array.
+Note: the order of the pairs in the output array should maintain the order of the y element in the original array.
+Examples:
+input:  arr = [0, -1, -2, 2, 1], k = 1
+output: [[1, 0], [0, -1], [-1, -2], [2, 1]]
+
+input:  arr = [1, 7, 5, 3, 32, 17, 12], k = 17
+output: []
+
+===============================
+
+import java.io.*;
+import java.util.*;
+
+class Solution {
+
+  static int[][] findPairsWithGivenDifference(int[] arr, int k) {
+    Map<Integer,Integer> map=new HashMap<>();
+    List<int[]> ans=new ArrayList<>();
+    //populate the map with x-k as key and x as value
+    for(int x:arr)
+    {
+      map.put(x-k,x);
+    }
+
+    //find pairs based on the map
+    for(int y:arr)
+    {
+      if(map.containsKey(y))
+      {
+        ans.add(new int[]{map.get(y),y});
+      }
+    }
+
+    //convert List<int[]> to int[][]
+    return ans.toArray(new int[ans.size()][]);
+  }
+
+  public static void main(String[] args) {
+    int arr[]={1,5,3,4,2};
+    int k=2;
+    int[][] result=findPairsWithGivenDifference(arr,k);
+    for(int[] pair:result)
+    {
+      System.out.println(Arrays.toString(pair));
+    }
+  }
+
+}
+
+
+==================================================================
+We can use a hash map to improve the time complexity to O(N⋅log(N)) for the worst case and O(N) for the average case. We rely on the fact that if x - y = k then x - k = y.
+
+The first step is to traverse the array, and for each element arr[i], we add a key-value pair of (arr[i] - k, arr[i]) to a hash map. Once the map is populated, we traverse the array again, 
+and check for each element if a match exists in the map.
+
+Both the first and second steps take O(N⋅log(N)) for the worst case and O(N) for the average case. So the overall time complexity is O(N) for the average case.
+
+
+
+
